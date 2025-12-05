@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { vi } from "vitest";
 
-// Mock navigate
+
 const mockNavigate = vi.fn();
 
 vi.mock("react-router-dom", async (orig) => {
@@ -27,9 +27,7 @@ describe("Navigation Component", () => {
     mockNavigate.mockClear();
   });
 
-  // ----------------------------
-  // UI Rendering + Menu Toggle
-  // ----------------------------
+  
   describe("Menu UI behavior", () => {
     it("renders navigation icon", () => {
       setup();
@@ -56,9 +54,6 @@ describe("Navigation Component", () => {
     });
   });
 
-  // ----------------------------
-  // Navigation Links
-  // ----------------------------
   describe("Navigation link behavior", () => {
     it("navigates to '/' when clicking Booking", async () => {
       setup();
@@ -90,4 +85,5 @@ describe("Navigation Component", () => {
       expect(mockNavigate).toHaveBeenCalledWith("/confirmation");
     });
   });
+  
 });
