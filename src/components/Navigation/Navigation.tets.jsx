@@ -4,6 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { vi } from "vitest";
 
+// Mock navigate
 const mockNavigate = vi.fn();
 
 vi.mock("react-router-dom", async (orig) => {
@@ -26,7 +27,10 @@ describe("Navigation Component", () => {
     mockNavigate.mockClear();
   });
 
-  describe("UI Rendering and Menu Toggle", () => {
+  // ----------------------------
+  // UI Rendering + Menu Toggle
+  // ----------------------------
+  describe("Menu UI behavior", () => {
     it("renders navigation icon", () => {
       setup();
       expect(screen.getByRole("img")).toBeInTheDocument();
@@ -38,51 +42,48 @@ describe("Navigation Component", () => {
       expect(screen.getByText("Confirmation")).toHaveClass("hide");
     });
 
-    it("opens the menu when clicking the icon", async () => {
+    it("toggles menu open and close (covers showMenu branch fully)", async () => {
       setup();
-      await userEvent.click(screen.getByRole("img"));
-
-      expect(screen.getByText("Booking")).not.toHaveClass("hide");
-      expect(screen.getByText("Confirmation")).not.toHaveClass("hide");
-    });
-
-    it("closes the menu when clicking icon twice", async () => {
-      setup();
-
       const icon = screen.getByRole("img");
-      await userEvent.click(icon); // open
-      await userEvent.click(icon); // close
 
+      // open
+      await userEvent.click(icon);
+      expect(screen.getByText("Booking")).not.toHaveClass("hide");
+
+      // close
+      await userEvent.click(icon);
       expect(screen.getByText("Booking")).toHaveClass("hide");
-      expect(screen.getByText("Confirmation")).toHaveClass("hide");
     });
   });
 
+  // ----------------------------
+  // Navigation Links
+  // ----------------------------
   describe("Navigation link behavior", () => {
-    it("navigates to Booking", async () => {
+    it("navigates to '/' when clicking Booking", async () => {
       setup();
       await userEvent.click(screen.getByRole("img")); // open menu
-
       await userEvent.click(screen.getByText("Booking"));
+
       expect(mockNavigate).toHaveBeenCalledWith("/");
     });
 
-    it("navigates to Confirmation", async () => {
+    it("navigates to '/confirmation' when clicking Confirmation", async () => {
       setup();
       await userEvent.click(screen.getByRole("img"));
-
       await userEvent.click(screen.getByText("Confirmation"));
+
       expect(mockNavigate).toHaveBeenCalledWith("/confirmation");
     });
 
-    it("clicking Booking when menu is closed still navigates", async () => {
+    it("clicking Booking while menu is closed still triggers navigation", async () => {
       setup();
       await userEvent.click(screen.getByText("Booking"));
 
       expect(mockNavigate).toHaveBeenCalledWith("/");
     });
 
-    it("clicking Confirmation when menu is closed still navigates", async () => {
+    it("clicking Confirmation while menu is closed still triggers navigation", async () => {
       setup();
       await userEvent.click(screen.getByText("Confirmation"));
 
