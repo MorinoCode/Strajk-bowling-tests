@@ -2,10 +2,9 @@ import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 import Confirmation from "./Confirmation";
-import { ApiLevel } from "@testing-library/user-event/dist/cjs/utils/index.js";
 
 describe("Confirmation Page", () => {
-  
+
   describe("Confirmation Page — Render static elements", () => {
 
     it("should render heading", async () => {
