@@ -8,6 +8,12 @@ const input = (name) => document.querySelector(`input[name="${name}"]`);
 describe("BookingInfo Component", () => {
 
   it("renders all input fields", () => {
+    /*
+    * Kriterier:
+    * - G: Användaren ska kunna välja ett datum och en tid från ett kalender- och tidvalssystem.
+    * - G: Användaren ska kunna ange antal spelare (minst 1 spelare).
+    * - G: Användaren ska kunna reservera ett eller flera banor beroende på antal spelare.
+    */
     render(<BookingInfo updateBookingDetails={() => {}} />);
 
     expect(input("when")).toBeInTheDocument();
@@ -17,6 +23,7 @@ describe("BookingInfo Component", () => {
   });
 
   it("calls updateBookingDetails when changing Date", async () => {
+    // G Kriterium: Användaren ska kunna välja ett datum... från ett kalender-... valsystem.
     const mockFn = vi.fn();
     const user = userEvent.setup();
 
@@ -28,6 +35,7 @@ describe("BookingInfo Component", () => {
   });
 
   it("calls updateBookingDetails when changing Time", async () => {
+    // G Kriterium: Användaren ska kunna välja... en tid från ett... tidvalssystem.
     const mockFn = vi.fn();
     const user = userEvent.setup();
 
@@ -39,6 +47,7 @@ describe("BookingInfo Component", () => {
   });
 
   it("calls updateBookingDetails when changing number of people", async () => {
+    // G Kriterium: Användaren ska kunna ange antal spelare (minst 1 spelare).
     const mockFn = vi.fn();
     const user = userEvent.setup();
 
@@ -50,6 +59,7 @@ describe("BookingInfo Component", () => {
   });
 
   it("calls updateBookingDetails when changing number of lanes", async () => {
+    // G Kriterium: Användaren ska kunna reservera ett eller flera banor beroende på antal spelare.
     const mockFn = vi.fn();
     const user = userEvent.setup();
 
