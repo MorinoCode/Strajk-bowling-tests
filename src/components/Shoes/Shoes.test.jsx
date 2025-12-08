@@ -17,6 +17,7 @@ describe("Shoes Component", () => {
   });
 
   it("renders heading 'Shoes'", () => {
+    // Hjälptest: Kontrollerar att rubriken för avsnittet visas.
     render(
       <Shoes
         updateSize={mockUpdateSize}
@@ -30,6 +31,10 @@ describe("Shoes Component", () => {
   });
 
   it("renders shoe input fields for each shoe", () => {
+    /*
+    * Kriterier:
+    * - G: Systemet ska visa en översikt där användaren kan kontrollera de valda skostorlekarna för varje spelare innan bokningen slutförs.
+    */
     render(
       <Shoes
         updateSize={mockUpdateSize}
@@ -47,6 +52,7 @@ describe("Shoes Component", () => {
   });
 
   it("calls addShoe when + button is clicked", () => {
+    // G Kriterium: Användaren ska kunna ange skostorlek för varje spelare. (Testar att lägga till ett skofält).
     render(
       <Shoes
         updateSize={mockUpdateSize}
@@ -61,7 +67,8 @@ describe("Shoes Component", () => {
     expect(mockAddShoe).toHaveBeenCalledTimes(1);
   });
 
-  it("calls removeShoe when  - button is clicked", () => {
+  it("calls removeShoe when - button is clicked", () => {
+    // G Kriterium: Användaren ska kunna ta bort ett tidigare valt fält för skostorlek genom att klicka på en "-"-knapp vid varje spelare.
     render(
       <Shoes
         updateSize={mockUpdateSize}
@@ -79,6 +86,11 @@ describe("Shoes Component", () => {
   });
 
   it("calls updateSize when typing in a shoe input", () => {
+    /*
+    * Kriterier:
+    * - G: Användaren ska kunna ange skostorlek för varje spelare.
+    * - G: Användaren ska kunna ändra skostorlek för varje spelare.
+    */
     render(
       <Shoes
         updateSize={mockUpdateSize}
