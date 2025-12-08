@@ -8,6 +8,7 @@ describe("Confirmation Page", () => {
   describe("Confirmation Page — Render static elements", () => {
 
     it("should render heading", async () => {
+      // Hjälptest: Kontrollerar att vyns titel renderas korrekt.
       render(
         <MemoryRouter>
           <Confirmation />
@@ -18,7 +19,8 @@ describe("Confirmation Page", () => {
       expect(headingElement).toHaveTextContent("See you soon!");
     });
 
-    it("should not render inputs, total price and confirm button if there is not a confirmation key in session storage  ", async () => {
+    it("should not render inputs, total price and confirm button if there is not a confirmation key in session storage", async () => {
+      // G Kriterium: Om användaren navigerar till bekräftelsevyn och ingen bokning är gjord eller finns i session storage ska texten "Inga bokning gjord visas".
       render(
         <MemoryRouter>
           <Confirmation />
@@ -42,7 +44,14 @@ describe("Confirmation Page", () => {
       expect(screen.getByText("Inga bokning gjord!")).toBeInTheDocument();
     });
 
-    it("should render inputs, total price and confirm button if there is a confirmation key in session storage  ", async () => {
+    it("should render inputs, total price and confirm button if there is a confirmation key in session storage", async () => {
+      /*
+      * Kriterier:
+      * - G: Om användaren navigerar till bekräftelsevyn och det finns en bokning sparad i session storage ska denna visas.
+      * - G: Systemet ska generera ett bokningsnummer och visa detta till användaren efter att bokningen är slutförd.
+      * - G: Systemet ska beräkna och visa den totala summan...
+      * - G: Den totala summan ska visas tydligt på bekräftelsesidan och inkludera en uppdelning mellan spelare och banor.
+      */
       sessionStorage.setItem(
         "confirmation",
         JSON.stringify({
