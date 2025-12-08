@@ -30,17 +30,20 @@ describe("Navigation Component", () => {
   
   describe("Menu UI behavior", () => {
     it("renders navigation icon", () => {
+      // Hjälptest: Kontrollerar att navigeringsikonen renderas.
       setup();
       expect(screen.getByRole("img")).toBeInTheDocument();
     });
 
     it("menu is hidden by default", () => {
+      // Hjälptest: Kontrollerar starttillståndet för menyn.
       setup();
       expect(screen.getByText("Booking")).toHaveClass("hide");
       expect(screen.getByText("Confirmation")).toHaveClass("hide");
     });
 
     it("toggles menu open and close (covers showMenu branch fully)", async () => {
+      // Hjälptest: Kontrollerar funktionen för att öppna/stänga menyn.
       setup();
       const icon = screen.getByRole("img");
 
@@ -56,6 +59,7 @@ describe("Navigation Component", () => {
 
   describe("Navigation link behavior", () => {
     it("navigates to '/' when clicking Booking", async () => {
+      // G Kriterium: Användaren ska kunna navigera mellan boknings-och bekräftelsevyn. (Navigera till bokningsvyn)
       setup();
       await userEvent.click(screen.getByRole("img")); // open menu
       await userEvent.click(screen.getByText("Booking"));
@@ -64,6 +68,7 @@ describe("Navigation Component", () => {
     });
 
     it("navigates to '/confirmation' when clicking Confirmation", async () => {
+      // G Kriterium: Användaren ska kunna navigera från bokningsvyn till bekräftelsevyn när bokningen är klar. (Navigera till bekräftelsevyn)
       setup();
       await userEvent.click(screen.getByRole("img"));
       await userEvent.click(screen.getByText("Confirmation"));
@@ -72,6 +77,7 @@ describe("Navigation Component", () => {
     });
 
     it("clicking Booking while menu is closed still triggers navigation", async () => {
+      // G Kriterium: Användaren ska kunna navigera mellan boknings-och bekräftelsevyn. (Navigera till bokningsvyn)
       setup();
       await userEvent.click(screen.getByText("Booking"));
 
@@ -79,6 +85,7 @@ describe("Navigation Component", () => {
     });
 
     it("clicking Confirmation while menu is closed still triggers navigation", async () => {
+      // G Kriterium: Användaren ska kunna navigera från bokningsvyn till bekräftelsevyn när bokningen är klar. (Navigera till bekräftelsevyn)
       setup();
       await userEvent.click(screen.getByText("Confirmation"));
 
