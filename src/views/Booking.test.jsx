@@ -36,6 +36,11 @@ vi.stubGlobal(
 describe("Booking Page", () => {
   describe("Booking Page — Render static elements", () => {
     it("should render heading and buttons", () => {
+      /*
+      * Kriterier:
+      * - G: Användaren ska kunna slutföra bokningen genom att klicka på en "slutför bokning"-knapp.
+      * - G: Användaren ska kunna ange skostorlek för varje spelare (Testar att '+'-knappen finns).
+      */
       render(
         <MemoryRouter>
           <Booking />
@@ -79,6 +84,7 @@ describe("Booking Page", () => {
     });
 
     it("shows error if Date is empty", async () => {
+      // VG Kriterium: Ifall användaren inte fyller i något av ovanstående så ska ett felmeddelande visas. (Testar för saknat datum)
       await user.type(time, "19:30");
       await user.type(people, "2");
       await user.type(lanes, "1");
@@ -91,6 +97,7 @@ describe("Booking Page", () => {
     });
 
     it("shows error if Time is empty", async () => {
+      // VG Kriterium: Ifall användaren inte fyller i något av ovanstående så ska ett felmeddelande visas. (Testar för saknad tid)
       await user.type(date, "2024-10-10");
       await user.type(people, "2");
       await user.type(lanes, "1");
@@ -103,6 +110,7 @@ describe("Booking Page", () => {
     });
 
     it("shows error if People is empty", async () => {
+      // VG Kriterium: Ifall användaren inte fyller i något av ovanstående så ska ett felmeddelande visas. (Testar för saknat antal spelare)
       await user.type(date, "2024-10-10");
       await user.type(time, "19:30");
       await user.type(lanes, "1");
@@ -115,6 +123,7 @@ describe("Booking Page", () => {
     });
 
     it("shows error if Lanes is empty", async () => {
+      // VG Kriterium: Ifall användaren inte fyller i något av ovanstående så ska ett felmeddelande visas. (Testar för saknat antal banor)
       await user.type(date, "2024-10-10");
       await user.type(time, "19:30");
       await user.type(people, "2");
@@ -127,13 +136,19 @@ describe("Booking Page", () => {
     });
 
     it("shows error if amount of shoes is not equal to pepole", async () => {
+      /*
+      * Kriterier:
+      * - VG: Om antalet personer och skor inte matchas ska ett felmeddelande visas.
+      * - G: Användaren ska kunna ange antal spelare.
+      * - G: Användaren ska kunna reservera ett eller flera banor beroende på antal spelare.
+      */
       await user.type(date, "2024-10-10");
       await user.type(time, "19:30");
       await user.type(people, "2");
       await user.type(lanes, "1");
 
       const shoesAddButtonElement = screen.getByRole("button", { name: "+" });
-      await userEvent.click(shoesAddButtonElement);
+      await userEvent.click(shoesAddButtonElement); // Lägger till 1 sko (vs 2 personer)
 
       let shoeInputs = screen
         .getAllByRole("textbox")
@@ -152,6 +167,11 @@ describe("Booking Page", () => {
     });
 
     it("shows error if all shoes input are not filled", async () => {
+      /*
+      * Kriterier:
+      * - VG: Om användaren försöker slutföra bokningen utan att ange skostorlek för en spelare som har valt att boka skor, ska systemet visa ett felmeddelande och be om att skostorleken anges.
+      * - G: Det ska vara möjligt att välja skostorlek för alla spelare som ingår i bokningen.
+      */
       await user.type(date, "2024-10-10");
       await user.type(time, "19:30");
       await user.type(people, "2");
@@ -166,7 +186,7 @@ describe("Booking Page", () => {
         .filter((el) => el.classList.contains("shoes__input"));
 
       const shoeInput = shoeInputs[0];
-      await user.type(shoeInput, "44");
+      await user.type(shoeInput, "44"); // Fyller i 1 sko, lämnar 1 tom
 
       await user.click(button);
 
@@ -176,10 +196,11 @@ describe("Booking Page", () => {
     });
 
     it("shows error if amount of pepole are more that 4 for each lane", async () => {
+      // VG Kriterium: Om det inte finns tillräckligt med lediga banor för det angivna antalet spelare, ska användaren få ett felmeddelande.
       await user.type(date, "2024-10-10");
       await user.type(time, "19:30");
-      await user.type(people, "5");
-      await user.type(lanes, "1");
+      await user.type(people, "5"); // 5 personer
+      await user.type(lanes, "1"); // 1 bana (max 4)
 
       const shoesAddButtonElement = screen.getByRole("button", { name: "+" });
       await user.click(shoesAddButtonElement);
@@ -193,7 +214,7 @@ describe("Booking Page", () => {
         .filter((el) => el.classList.contains("shoes__input"));
 
       for (const shoeInput of shoeInputs) {
-        await user.type(shoeInput, "44");
+        await user.type(shoeInput, "44"); // Se till att alla skor är ifyllda för att isolera felet
       }
 
       await user.click(button);
@@ -204,6 +225,15 @@ describe("Booking Page", () => {
     });
 
     it("does not show any error when all fields are correctly filled", async () => {
+      /*
+      * Kriterier:
+      * - G: Användaren ska kunna välja ett datum och en tid från ett kalender- och tidvalssystem.
+      * - G: Användaren ska kunna ange antal spelare (minst 1 spelare).
+      * - G: Användaren ska kunna reservera ett eller flera banor beroende på antal spelare.
+      * - G: Det ska vara möjligt att välja skostorlek för alla spelare som ingår i bokningen.
+      * - G: Användaren ska kunna ange skostorlek för varje spelare.
+      * - VG: Säkerställer att inga VG-felmeddelanden visas när allt är korrekt ifyllt.
+      */
       await user.type(date, "2024-10-10");
       await user.type(time, "19:30");
       await user.type(people, "2");
@@ -239,6 +269,7 @@ describe("Booking Page", () => {
 
   describe("Booking Page - functionality tests", async () => {
     it("should add a input for shoes when add button is clicked", async () => {
+      // G Kriterium: Användaren ska kunna ange skostorlek för varje spelare.
       render(
         <MemoryRouter>
           <Booking />
@@ -254,7 +285,8 @@ describe("Booking Page", () => {
       expect(shoeInputs[0]).toBeInTheDocument();
     });
 
-    it("should delete a input for shoes when delete button is clicked", async () => {
+    it("should delete a single input for shoes when its delete button is clicked", async () => {
+      // G Kriterium: Användaren ska kunna ta bort ett tidigare valt fält för skostorlek genom att klicka på en "-"-knapp vid varje spelare.
       render(
         <MemoryRouter>
           <Booking />
@@ -281,7 +313,8 @@ describe("Booking Page", () => {
       expect(shoeInputs.length).toBe(0);
     });
 
-    it("should delete the second input for shoes when  it's delete button is clicked", async () => {
+    it("should delete the second input for shoes when its delete button is clicked", async () => {
+      // G Kriterium: Användaren ska kunna ta bort ett tidigare valt fält för skostorlek genom att klicka på en "-"-knapp vid varje spelare.
       render(
         <MemoryRouter>
           <Booking />
@@ -337,6 +370,14 @@ describe("Booking Page", () => {
     });
 
     it("should submit booking, save confirmation and navigate", async () => {
+      /*
+      * Kriterier:
+      * - G: Användaren ska kunna slutföra bokningen genom att klicka på en "slutför bokning"-knapp.
+      * - G: Användaren ska kunna navigera från bokningsvyn till bekräftelsevyn när bokningen är klar.
+      * - G: Systemet ska generera ett bokningsnummer och visa detta till användaren efter att bokningen är slutförd.
+      * - G: Systemet ska beräkna och visa den totala summan... (verifieras via den sparade datan).
+      * - G: Systemet ska visa en översikt där användaren kan kontrollera de valda skostorlekarna... (Genom att skicka med skostorlekarna i anropet, vilket mocken bekräftar).
+      */
       await user.type(date, "2024-10-10");
       await user.type(time, "19:30");
       await user.type(people, "2");
