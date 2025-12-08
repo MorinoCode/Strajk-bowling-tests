@@ -77,7 +77,7 @@ describe("Navigation Component", () => {
     });
 
     it("clicking Booking while menu is closed still triggers navigation", async () => {
-      // G Kriterium: Användaren ska kunna navigera mellan boknings-och bekräftelsevyn. (Navigera till bokningsvyn)
+      // G Kriterium: Användaren ska kunna navigera mellan boknings-och bekräftelsevyn (Navigera till bokningsvyn)
       setup();
       await userEvent.click(screen.getByText("Booking"));
 
