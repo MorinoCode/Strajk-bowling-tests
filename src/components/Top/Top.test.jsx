@@ -8,7 +8,6 @@ vi.mock("../../assets/strajk-logo.svg", () => ({
 
 describe("Top Component", () => {
   it("should render image and title", () => {
-    // Hjälptest: Kontrollerar att sidans huvudtitel ("Booking" / "See you soon!") renderas korrekt.
     render(<Top title="Title" />);
 
     const imgElement = screen.getByRole("img");
