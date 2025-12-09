@@ -18,12 +18,14 @@ function Confirmation() {
       <Top title="See you soon!" />
       {state || confirmation ? (
         <form className="confirmation__details">
+          
           <Input
             label="When"
             type="text"
             customClass="confirmation__input"
             defaultValue={confirmation.when.replace("T", " ")}
             disabled="disabled"
+            name="when" 
           />
           <Input
             label="Who"
@@ -31,6 +33,7 @@ function Confirmation() {
             customClass="confirmation__input"
             defaultValue={confirmation.people}
             disabled="disabled"
+            name="who"
           />
           <Input
             label="Lanes"
@@ -38,6 +41,7 @@ function Confirmation() {
             customClass="confirmation__input"
             defaultValue={confirmation.lanes}
             disabled="disabled"
+            name="lanes"
           />
           <Input
             label="Booking number"
@@ -45,6 +49,7 @@ function Confirmation() {
             customClass="confirmation__input"
             defaultValue={confirmation.bookingId}
             disabled="disabled"
+            name="bookingNumber"
           />
           <article className="confirmation__price">
             <p>Total:</p>

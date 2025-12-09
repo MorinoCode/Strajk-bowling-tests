@@ -10,13 +10,15 @@ function Input({
   disabled,
   maxLength,
 }) {
+  const inputId = name;
   return (
     <section className="input">
-      <label className="input__label">{label}</label>
+      <label className="input__label" htmlFor={inputId}>{label}</label>
       <input
         type={type}
         className={`input__field ${customClass ? customClass : ""}`}
         name={name}
+        id={inputId}
         onChange={handleChange}
         defaultValue={defaultValue ? defaultValue : ""}
         maxLength={maxLength}
