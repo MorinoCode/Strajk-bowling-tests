@@ -17,7 +17,6 @@ describe("Shoes Component", () => {
   });
 
   it("renders heading 'Shoes'", () => {
-    // Hjälptest: Kontrollerar att rubriken för avsnittet visas.
     render(
       <Shoes
         updateSize={mockUpdateSize}
@@ -46,6 +45,9 @@ describe("Shoes Component", () => {
 
     expect(screen.getByText("Shoe size / person 1")).toBeInTheDocument();
     expect(screen.getByText("Shoe size / person 2")).toBeInTheDocument();
+
+    expect(screen.getByLabelText("Shoe size / person 1")).toBeInTheDocument();
+    expect(screen.getByLabelText("Shoe size / person 2")).toBeInTheDocument();
 
     const inputs = screen.getAllByRole("textbox");
     expect(inputs.length).toBe(2);
@@ -100,7 +102,7 @@ describe("Shoes Component", () => {
       />
     );
 
-    const input = screen.getByRole("textbox");
+    const input = screen.getByLabelText("Shoe size / person 1");
 
     fireEvent.change(input, { target: { name: "abc", value: "41" } });
 
