@@ -73,12 +73,11 @@ describe("Booking Page", () => {
         </MemoryRouter>
       );
 
-      const inputs = screen.getAllByDisplayValue("");
-
-      date = inputs.find((el) => el.type === "date");
-      time = inputs.find((el) => el.type === "time");
-      people = inputs.find((el) => el.name === "people");
-      lanes = inputs.find((el) => el.name === "lanes");
+      // Använder getByLabelText för att hitta fälten
+      date = screen.getByLabelText("Date");
+      time = screen.getByLabelText("Time");
+      people = screen.getByLabelText("Number of awesome bowlers");
+      lanes = screen.getByLabelText("Number of lanes");
 
       button = screen.getByRole("button", { name: "strIIIIIike!" });
     });
@@ -150,11 +149,8 @@ describe("Booking Page", () => {
       const shoesAddButtonElement = screen.getByRole("button", { name: "+" });
       await userEvent.click(shoesAddButtonElement); // Lägger till 1 sko (vs 2 personer)
 
-      let shoeInputs = screen
-        .getAllByRole("textbox")
-        .filter((el) => el.classList.contains("shoes__input"));
-
-      const shoeInput = shoeInputs[0];
+      // Använder getByLabelText för den första skostorleken
+      const shoeInput = screen.getByLabelText("Shoe size / person 1");
       await user.type(shoeInput, "1");
 
       await user.click(button);
@@ -181,12 +177,9 @@ describe("Booking Page", () => {
       await userEvent.click(shoesAddButtonElement);
       await userEvent.click(shoesAddButtonElement);
 
-      let shoeInputs = screen
-        .getAllByRole("textbox")
-        .filter((el) => el.classList.contains("shoes__input"));
-
-      const shoeInput = shoeInputs[0];
-      await user.type(shoeInput, "44"); // Fyller i 1 sko, lämnar 1 tom
+      // Använder getByLabelText för den första skostorleken
+      const shoeInput1 = screen.getByLabelText("Shoe size / person 1");
+      await user.type(shoeInput1, "44"); // Fyller i 1 sko, lämnar 1 tom
 
       await user.click(button);
 
@@ -209,13 +202,12 @@ describe("Booking Page", () => {
       await user.click(shoesAddButtonElement);
       await user.click(shoesAddButtonElement);
 
-      let shoeInputs = screen
-        .getAllByRole("textbox")
-        .filter((el) => el.classList.contains("shoes__input"));
-
-      for (const shoeInput of shoeInputs) {
-        await user.type(shoeInput, "44"); // Se till att alla skor är ifyllda för att isolera felet
-      }
+      // Använder getByLabelText för att hitta skofälten och fylla i dem
+      await user.type(screen.getByLabelText("Shoe size / person 1"), "44");
+      await user.type(screen.getByLabelText("Shoe size / person 2"), "44");
+      await user.type(screen.getByLabelText("Shoe size / person 3"), "44");
+      await user.type(screen.getByLabelText("Shoe size / person 4"), "44");
+      await user.type(screen.getByLabelText("Shoe size / person 5"), "44");
 
       await user.click(button);
 
@@ -244,13 +236,9 @@ describe("Booking Page", () => {
       await user.click(shoesAddButtonElement)
       await user.click(shoesAddButtonElement)
 
-      let shoeInputs = screen
-        .getAllByRole("textbox")
-        .filter((el) => el.classList.contains("shoes__input"));
-
-      for (const shoeInput of shoeInputs) {
-        await user.type(shoeInput, "44");
-      }
+      // Använder getByLabelText för skofälten
+      await user.type(screen.getByLabelText("Shoe size / person 1"), "44");
+      await user.type(screen.getByLabelText("Shoe size / person 2"), "44");
 
       user.click(screen.getByText("strIIIIIike!"));
 
@@ -279,10 +267,8 @@ describe("Booking Page", () => {
       const shoesAddButtonElement = screen.getByRole("button", { name: "+" });
       await userEvent.click(shoesAddButtonElement);
 
-      const shoeInputs = screen
-        .getAllByRole("textbox")
-        .filter((el) => el.classList.contains("shoes__input"));
-      expect(shoeInputs[0]).toBeInTheDocument();
+      // Använder getByLabelText för verifiering
+      expect(screen.getByLabelText("Shoe size / person 1")).toBeInTheDocument();
     });
 
     it("should delete a single input for shoes when its delete button is clicked", async () => {
@@ -296,21 +282,16 @@ describe("Booking Page", () => {
       const shoesAddButtonElement = screen.getByRole("button", { name: "+" });
       await userEvent.click(shoesAddButtonElement);
 
-      let shoeInputs = screen
-        .getAllByRole("textbox")
-        .filter((el) => el.classList.contains("shoes__input"));
-      expect(shoeInputs[0]).toBeInTheDocument();
+      // Verifierar att fältet finns
+      expect(screen.getByLabelText("Shoe size / person 1")).toBeInTheDocument();
 
       const shoesDeleteButtonElement = screen.getByRole("button", {
         name: "-",
       });
       await userEvent.click(shoesDeleteButtonElement);
 
-      shoeInputs = screen
-        .queryAllByRole("textbox")
-        .filter((el) => el.classList.contains("shoes__input"));
-
-      expect(shoeInputs.length).toBe(0);
+      // Verifierar att fältet är borta
+      expect(screen.queryByLabelText("Shoe size / person 1")).toBeNull();
     });
 
     it("should delete the second input for shoes when its delete button is clicked", async () => {
@@ -325,22 +306,17 @@ describe("Booking Page", () => {
       await userEvent.click(shoesAddButtonElement);
       await userEvent.click(shoesAddButtonElement);
 
-      let shoeInputs = screen
-        .getAllByRole("textbox")
-        .filter((el) => el.classList.contains("shoes__input"));
-      expect(shoeInputs.length).toBe(2);
+      // Verifierar att båda fälten finns
+      expect(screen.getByLabelText("Shoe size / person 2")).toBeInTheDocument();
 
       const shoesDeleteButtonElement = screen.getAllByRole("button", {
         name: "-",
       });
       await userEvent.click(shoesDeleteButtonElement[1]);
 
-      shoeInputs = screen
-        .queryAllByRole("textbox")
-        .filter((el) => el.classList.contains("shoes__input"));
-
-      expect(shoeInputs.length).toBe(1);
-      expect(shoeInputs[0]).toBeInTheDocument();
+      // Verifierar att Person 1 är kvar, men Person 2 är borta
+      expect(screen.getByLabelText("Shoe size / person 1")).toBeInTheDocument();
+      expect(screen.queryByLabelText("Shoe size / person 2")).toBeNull();
     });
   });
 
@@ -359,12 +335,12 @@ describe("Booking Page", () => {
         </MemoryRouter>
       );
 
-      const inputs = screen.getAllByDisplayValue("");
-
-      date = inputs.find((el) => el.type === "date");
-      time = inputs.find((el) => el.type === "time");
-      people = inputs.find((el) => el.name === "people");
-      lanes = inputs.find((el) => el.name === "lanes");
+      // --- Uppdaterad selektion med getByLabelText ---
+      date = screen.getByLabelText("Date");
+      time = screen.getByLabelText("Time");
+      people = screen.getByLabelText("Number of awesome bowlers");
+      lanes = screen.getByLabelText("Number of lanes");
+      // ------------------------------------------------
 
       button = screen.getAllByRole("button", { name: "strIIIIIike!" })[0];
     });
@@ -387,12 +363,9 @@ describe("Booking Page", () => {
       await user.click(addButtons);
       await user.click(addButtons);
 
-      const shoeInputs = screen
-        .getAllByRole("textbox")
-        .filter((el) => el.classList.contains("shoes__input"));
-
-      await user.type(shoeInputs[0], "44");
-      await user.type(shoeInputs[1], "43");
+      // Använder getByLabelText för skofälten
+      await user.type(screen.getByLabelText("Shoe size / person 1"), "44");
+      await user.type(screen.getByLabelText("Shoe size / person 2"), "43");
 
       await user.click(button);
 
