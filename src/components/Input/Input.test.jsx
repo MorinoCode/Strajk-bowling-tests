@@ -1,33 +1,35 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import Input from "./Input";
+import { vi } from "vitest";
 
 describe("Input Component", () => {
   it("renders label and input", () => {
-    // Hjälptest: Kontrollerar grundläggande rendering av input-komponenten.
+    // Kontrollerar grundläggande rendering av input-komponenten.
     render(<Input label="Test Label" type="text" name="test" />);
 
     expect(screen.getByText("Test Label")).toBeInTheDocument();
-    expect(screen.getByRole("textbox")).toBeInTheDocument();
+    expect(screen.getByLabelText("Test Label")).toBeInTheDocument();
   });
 
   it("passes defaultValue correctly", () => {
-    // Stödjer: G-kriteriet för översikt/bekräftelse där data ska visas i input-fält.
+    // bekräftelse där data ska visas i input-fält.
     render(<Input label="Name" type="text" name="username" defaultValue="Mandus" />);
-    expect(screen.getByRole("textbox")).toHaveValue("Mandus");
+    expect(screen.getByLabelText("Name")).toHaveValue("Mandus");
   });
 
   it("calls handleChange on input change", () => {
-    // Stödjer: Alla G-kriterier som involverar att användaren kan mata in/ändra data (datum, tid, spelare, banor, skostorlek).
+    //  användaren kan mata in/ändra data (datum, tid, spelare, banor, skostorlek).
     const mockFn = vi.fn();
     render(<Input label="Email" type="text" name="email" handleChange={mockFn} />);
 
-    fireEvent.change(screen.getByRole("textbox"), { target: { value: "a" } });
+    // Använder getByLabelText
+    fireEvent.change(screen.getByLabelText("Email"), { target: { value: "a" } });
 
     expect(mockFn).toHaveBeenCalled();
   });
 
   it("applies custom class when provided", () => {
-    // Hjälptest: Kontrollerar att anpassade CSS-klasser kan appliceras.
+    //  Kontrollerar att anpassade CSS-klasser kan appliceras.
     render(
       <Input
         label="Age"
@@ -37,11 +39,11 @@ describe("Input Component", () => {
       />
     );
 
-    expect(screen.getByRole("spinbutton")).toHaveClass("custom-test");
+    expect(screen.getByLabelText("Age")).toHaveClass("custom-test");
   });
 
   it("sets disabled attribute", () => {
-    // Stödjer: G-kriteriet för bekräftelsevyn där input-fälten ska vara disabled.
+    // G-kriteriet för bekräftelsevyn där input-fälten ska vara disabled.
     render(
       <Input
         label="Disabled"
@@ -51,11 +53,12 @@ describe("Input Component", () => {
       />
     );
 
-    expect(screen.getByRole("textbox")).toBeDisabled();
+    // Använder getByLabelText
+    expect(screen.getByLabelText("Disabled")).toBeDisabled();
   });
 
   it("sets maxLength attribute", () => {
-    // Hjälptest: Kontrollerar att inmatningsbegränsningar fungerar.
+    // Kontrollerar att inmatningsbegränsningar fungerar.
     render(
       <Input
         label="Code"
@@ -65,7 +68,7 @@ describe("Input Component", () => {
       />
     );
 
-    expect(screen.getByRole("textbox")).toHaveAttribute("maxLength", "5");
+    expect(screen.getByLabelText("Code")).toHaveAttribute("maxLength", "5");
   });
   
 });
