@@ -27,12 +27,11 @@ describe("Confirmation Page", () => {
         </MemoryRouter>
       );
 
-      expect(
-        screen.queryByDisplayValue("2024-10-10 10:30")
-      ).not.toBeInTheDocument();
-      expect(screen.queryByDisplayValue("2")).not.toBeInTheDocument();
-      expect(screen.queryByDisplayValue("3")).not.toBeInTheDocument();
-      expect(screen.queryByDisplayValue("XYZ999")).not.toBeInTheDocument();
+      // Använder queryByLabelText för att verifiera att input-fälten inte finns
+      expect(screen.queryByLabelText("When")).not.toBeInTheDocument();
+      expect(screen.queryByLabelText("Who")).not.toBeInTheDocument();
+      expect(screen.queryByLabelText("Lanes")).not.toBeInTheDocument();
+      expect(screen.queryByLabelText("Booking number")).not.toBeInTheDocument();
 
       const price = screen.queryByText("560 sek");
       expect(price).not.toBeInTheDocument();
@@ -68,10 +67,11 @@ describe("Confirmation Page", () => {
         </MemoryRouter>
       );
 
-      expect(screen.getByDisplayValue("2024-10-10 10:30")).toBeInTheDocument();
-      expect(screen.getByDisplayValue("2")).toBeInTheDocument();
-      expect(screen.getByDisplayValue("3")).toBeInTheDocument();
-      expect(screen.getByDisplayValue("XYZ999")).toBeInTheDocument();
+      // Använder getByLabelText för att hitta fält och kontrollera deras värden
+      expect(screen.getByLabelText("When")).toHaveValue("2024-10-10 10:30");
+      expect(screen.getByLabelText("Lanes")).toHaveValue("2");
+      expect(screen.getByLabelText("Who")).toHaveValue("3");
+      expect(screen.getByLabelText("Booking number")).toHaveValue("XYZ999");
 
       const price = screen.getByText("560 sek");
       expect(price).toBeInTheDocument();
