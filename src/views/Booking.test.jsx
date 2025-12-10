@@ -15,26 +15,11 @@ vi.mock("react-router-dom", async () => {
 });
 useNavigate.mockReturnValue(vi.fn());
 
-vi.stubGlobal(
-  "fetch",
-  vi.fn(() =>
-    Promise.resolve({
-      json: () =>
-        Promise.resolve({
-          bookingDetails: {
-            when: "2024-10-10T19:30",
-            people: 2,
-            lanes: 1,
-            bookingId: "ABC123",
-            price: 300,
-          },
-        }),
-    })
-  )
-);
 
 describe("Booking Page", () => {
+
   describe("Booking Page — Render static elements", () => {
+
     it("should render heading and buttons", () => {
       /*
       * Kriterier:
@@ -151,7 +136,7 @@ describe("Booking Page", () => {
 
       // Använder getByLabelText för den första skostorleken
       const shoeInput = screen.getByLabelText("Shoe size / person 1");
-      await user.type(shoeInput, "1");
+      await user.type(shoeInput, "41");
 
       await user.click(button);
 
@@ -204,10 +189,10 @@ describe("Booking Page", () => {
 
       // Använder getByLabelText för att hitta skofälten och fylla i dem
       await user.type(screen.getByLabelText("Shoe size / person 1"), "44");
-      await user.type(screen.getByLabelText("Shoe size / person 2"), "44");
-      await user.type(screen.getByLabelText("Shoe size / person 3"), "44");
-      await user.type(screen.getByLabelText("Shoe size / person 4"), "44");
-      await user.type(screen.getByLabelText("Shoe size / person 5"), "44");
+      await user.type(screen.getByLabelText("Shoe size / person 2"), "43");
+      await user.type(screen.getByLabelText("Shoe size / person 3"), "42");
+      await user.type(screen.getByLabelText("Shoe size / person 4"), "41");
+      await user.type(screen.getByLabelText("Shoe size / person 5"), "40");
 
       await user.click(button);
 
@@ -238,7 +223,7 @@ describe("Booking Page", () => {
 
       // Använder getByLabelText för skofälten
       await user.type(screen.getByLabelText("Shoe size / person 1"), "44");
-      await user.type(screen.getByLabelText("Shoe size / person 2"), "44");
+      await user.type(screen.getByLabelText("Shoe size / person 2"), "43");
 
       user.click(screen.getByText("strIIIIIike!"));
 
